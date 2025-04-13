@@ -19,15 +19,18 @@ def add(string):
     if not string:
         return 0
 
+    numbers_str = string
+    delimiter_pattern = ",|\n"
+
     # Checking for delimeter
     if string.startswith("//"):
-        parts = string.split("\n", 1)
-        delimiter = parts[0][2:]  # getting the delimeter after //
-        numbers_str = parts[1]
-        delimiter_pattern = re.escape(delimiter)
-    else:
-        numbers_str = string
-        delimiter_pattern = ",|\n"
+        header, numbers_str = string.split("\n", 1)
+        delimiter_matches = re.findall(r'\[(.*?)\]', header)
+        if delimiter_matches:
+            escaped_delimiters = [re.escape(d) for d in delimiter_matches]
+            delimiter_pattern = '|'.join(escaped_delimiters)
+        else:
+            delimiter_pattern = re.escape(header[2:])
 
     numbers = list(map(int, re.split(delimiter_pattern, numbers_str)))
 
@@ -87,3 +90,12 @@ print(add("2,1001"))
 print(add("//;\n1;2;1000"))    
 print(add("//|\n5|1001|6"))    
 print(add("1\n2,3"))           
+
+"""
+scenario 7
+
+Delimiters can be of any length with the following format: “//[delimiter]\n” for example: “//[***]\n1***2***3” should return 6
+"""
+
+print(add('//[***]\n1***2***3'))
+print(add("//[!!]\n1!!-2!!3")) 
