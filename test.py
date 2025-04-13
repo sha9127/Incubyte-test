@@ -36,7 +36,7 @@ def add(string):
     if negatives:
         raise Exception(f"negative numbers not allowed: {','.join(map(str, negatives))}")
 
-    return sum(numbers)
+    return sum(n for n in numbers if n <= 1000)
 
 print(add(''))
 print(add('1'))
@@ -48,7 +48,7 @@ scenario 2 (Allow the add method to handle any amount of numbers.)
 
 print(add('1,2,3,4,5'))
 print(add('1,2,3,4,5,6,7,8,9,10'))
-print(add('1,-2,-3,9,-3'))
+# print(add('1,-2,-3,9,-3'))
 
 
 """
@@ -76,6 +76,14 @@ Calling add with a negative number will throw an exception: "negative numbers no
 If there are multiple negative numbers, show all of them in the exception message, separated by commas.
 """
 
-print(add('1,-2,-3,9,-3'))
-print(add("//;\n1;-2"))
+# print(add('1,-2,-3,9,-3'))
+# print(add("//;\n1;-2"))
 
+"""
+Scenario 6 
+Numbers bigger than 1000 should be ignored, so adding 2 + 1001 = 2
+"""
+print(add("2,1001"))           
+print(add("//;\n1;2;1000"))    
+print(add("//|\n5|1001|6"))    
+print(add("1\n2,3"))           
