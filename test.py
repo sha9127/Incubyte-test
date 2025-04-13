@@ -16,11 +16,21 @@ Input: “1,5”, Output: 6
 import re
 
 def add(string):
-    if len(string) == 0:
+    if not string:
         return 0
+
+    # Checking for delimeter
+    if string.startswith("//"):
+        parts = string.split("\n", 1)
+        delimiter = parts[0][2:]  # getting the delimeter after //
+        numbers_str = parts[1]
+        delimiter_pattern = re.escape(delimiter)
     else:
-        numbers = re.split(',|\n', string)
-        return sum(map(int, numbers))
+        numbers_str = string
+        delimiter_pattern = ",|\n"
+
+    numbers = re.split(delimiter_pattern, numbers_str)
+    return sum(map(int, numbers))
 
 print(add(''))
 print(add('1'))
@@ -43,3 +53,12 @@ Allow the add method to handle new lines between numbers (instead of commas). ("
 """
 
 print(add("1\n2,3"))
+
+"""
+Scenario 4
+To change the delimiter, the beginning of the string will contain a separate line that looks like this: "//[delimiter]\n[numbers…]". For example, "//;\n1;2" where the delimiter is ";" should return 3.
+
+"""
+
+print(add("//;\n1;2"))
+
